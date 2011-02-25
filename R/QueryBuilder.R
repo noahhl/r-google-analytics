@@ -695,6 +695,8 @@ QueryBuilder <- function() {
     }
     # remove the last '&' that joins the query parameters together.
     uri <- sub("&$", "", uri)
+	# remove any spaces that got added in from bad input
+	uri <- gsub(" ", "", uri)
     return(uri)
   }
 
