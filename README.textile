@@ -1,0 +1,5 @@
+<h2>r-google-analytics</h2>
+This is a fork of the RGoogleAnalytics package from http://code.google.com/p/r-google-analytics/.
+
+It has had several changes made to be more user friendly, including:
+* Handle spaces in query definition
