@@ -1,5 +1,6 @@
 <h2>r-google-analytics</h2>
-This is a fork of the RGoogleAnalytics package from http://code.google.com/p/r-google-analytics/.
+This is a fork of the RGoogleAnalytics package from http://code.google.com/p/r-google-analytics/. All credit is due to those authors: Michael Pearmain, Nicolas Remy, Nick Mihailovski
 
-It has had several changes made to be more user friendly, including:
+This fork has had several changes made to be more user friendly, including:
 * Handle spaces in query definition
+* Added support for storing Google username and password on the filesystem (in home directory/.rGooogleAnalytics_creds). This is not particularly secure, but better than storing in a script or plaintext file on the filesystem.

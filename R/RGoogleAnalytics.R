@@ -89,6 +89,15 @@ RGoogleAnalytics <- function() {
   # reasons. The Auth token is valid for 14 days.
   auth.token <- NULL
 
+  StoreCredentials <- function(user, pass) {
+    # This is crappy security, but let's at least not save our username and password in scripts or in plaintext on the file system. Someone's still going to hack this, but let's not make it SO easy.
+      user <- serialize(user, NULL)
+      pass <- serialize(pass, NULL)
+      creds <- list(user=user, pass=pass)
+      save(creds, file=paste(ifelse(.Platform$OS.type=="unix", "~", Sys.getenv("R_USER")), "/.rGoogleAnalytics_creds", sep=""))
+      SetCredentials(unserialize(user), unserialize(pass))
+    }
+
   SetCredentials <- function(username, pass) {
     # Authorizes this script to access the users Google Analytics Account.
     # Passes the username and password to the Google Accounts API ClientLogin
@@ -557,6 +566,16 @@ RGoogleAnalytics <- function() {
 
 
   ##############################################################################
+  #Read saved user/pass
+  tryCatch({
+      suppressWarnings(load(file=paste(ifelse(.Platform$OS.type=="unix", "~", Sys.getenv("R_USER")), "/.rGoogleAnalytics_creds", sep="")))
+      SetCredentials(unserialize(creds$user), unserialize(creds$pass))
+      cat("Succesfully loaded saved credentials.\n")
+    }, error = function(e) {
+      cat("Didn't find any credentials. Store some with StoreCredentials() or set them for just this session with SetCredentials().\n")
+    })
+
+
   return(list(GetProfileData       = GetProfileData,
               GetAccountFeedXML    = GetAccountFeedXML,
               ParseAccountFeedXML  = ParseAccountFeedXML,
@@ -565,5 +584,6 @@ RGoogleAnalytics <- function() {
               GetDataFeedXML       = GetDataFeedXML,
               ParseDataFeedXML     = ParseDataFeedXML,
               ParseApiErrorMessage = ParseApiErrorMessage,
+              StoreCredentials     = StoreCredentials,
               SetCredentials       = SetCredentials))
 }
